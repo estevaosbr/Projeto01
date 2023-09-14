@@ -103,7 +103,7 @@ public class Cliente {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("br.com.estev.domain.Cliente{");
+        final StringBuffer sb = new StringBuffer("Cliente{");
         sb.append("nome='").append(nome).append('\'');
         sb.append(", cpf=").append(cpf);
         sb.append(", telefone=").append(telefone);

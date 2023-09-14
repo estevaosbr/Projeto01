@@ -40,6 +40,7 @@ public class ClienteMapDAO implements IClienteDAO{
             cliente1.setCpf(cliente.getCpf());
             cliente1.setEndereco(cliente.getEndereco());
             cliente1.setCep(cliente.getCep());
+            cliente1.setNumero(cliente.getNumero());
             cliente1.setTelefone(cliente.getTelefone());
             cliente1.setCidade(cliente.getCidade());
             cliente1.setEstado(cliente.getEstado());

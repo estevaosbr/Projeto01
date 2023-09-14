@@ -2,6 +2,8 @@ package br.com.estev;
 
 import br.com.estev.dao.ClienteMapDAO;
 import br.com.estev.dao.IClienteDAO;
+import br.com.estev.telas.*;
+
 import javax.swing.*;
 
 public class App {
@@ -10,31 +12,40 @@ public class App {
 
     public static void main(String[] args) {
         iClienteDAO = new ClienteMapDAO();
+        boolean online = true;
 
-        String opcao = JOptionPane.showInputDialog(null,
-                "1 - cadastro, 2 - consulta, 3 - exclusão, 4 - alteração, 5 - sair",
-                "Painel de clientes",JOptionPane.PLAIN_MESSAGE);
-
-        while (!eOpcaoValida(opcao)){
-            if ("".equals(opcao)){
-                break;
-            }
-            opcao = JOptionPane.showInputDialog(null,
+        while (online) {
+            // TODO: 13/09/2023 CRIAR UMA CAIXA DE DIALOGOS PERSONALIZADA OU USAR OUTRO JFRAME NO LUGAR DE JOPTIONPANE
+            // TODO: 13/09/2023 JOptionPane fecha ao usar dispose() em uma janela secundária
+            JOptionPane jOptionPane = new JOptionPane();
+            String opcao = JOptionPane.showInputDialog(null,
                     "1 - cadastro, 2 - consulta, 3 - exclusão, 4 - alteração, 5 - sair",
-                    "Painel de clientes",JOptionPane.INFORMATION_MESSAGE);
-        }
+                    "Painel de clientes", JOptionPane.PLAIN_MESSAGE);
 
-        while (eOpcaoValida(opcao)){
-            int opcaoInt = Integer.parseInt(opcao);
+            while (!eOpcaoValida(opcao)) {
+                opcao = JOptionPane.showInputDialog(null,
+                        "1 - cadastro, 2 - consulta, 3 - exclusão, 4 - alteração, 5 - sair",
+                        "Painel de clientes", JOptionPane.INFORMATION_MESSAGE);
+            }
 
-            if (opcaoInt == 5){
-                break;
-            } else if (opcaoInt == 1) {
+            while (eOpcaoValida(opcao)) {
+                int opcaoInt = Integer.parseInt(opcao);
 
-                JScrollPane jTextField = new JScrollPane();
+                if (opcaoInt == 5) {
+                    break;
+                } else if (opcaoInt == 1) {
+                    Cadastro cadastro = new Cadastro();
+                    try {
+                        iClienteDAO.cadastrar(cadastro.inicia());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
+
     }
+
 
     private static Boolean eOpcaoValida(String string){
         try{
@@ -43,8 +54,8 @@ public class App {
         }
         catch (NumberFormatException exception){
             JOptionPane.showMessageDialog(null,"Digite uma opção válida");
-            exception.printStackTrace();
+            //exception.printStackTrace();
+            return false;
         }
-        return false;
     }
 }
