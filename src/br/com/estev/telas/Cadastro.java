@@ -1,4 +1,6 @@
 package br.com.estev.telas;
+import br.com.estev.dao.ClienteMapDAO;
+import br.com.estev.dao.IClienteDAO;
 import br.com.estev.domain.Cliente;
 
 import javax.swing.*;
@@ -16,11 +18,15 @@ public class Cadastro extends JDialog {
     private JTextField fieldCidade;
     private JTextField fieldEstado;
     private JTextField fieldCEP;
+    private final IClienteDAO iClienteDAO;
 
     public Cadastro() {
+        setTitle("Cadastro");
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+
+        iClienteDAO = new ClienteMapDAO();
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -52,19 +58,17 @@ public class Cadastro extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private Cliente onOK() {
+    private void onOK() {
         try{
             Cliente cliente = new Cliente(fieldNome.getText(), fieldCPF.getText(), fieldTelefone.getText(),
                     fieldEndereco.getText(), fieldNumero.getText(), fieldCidade.getText(), fieldEstado.getText(),
                     fieldCEP.getText());
             JOptionPane.showMessageDialog(null,"Cliente cadastrado com sucesso!");
-            return cliente;
-
+            iClienteDAO.cadastrar(cliente);
         }
         catch(NumberFormatException exception){
             JOptionPane.showMessageDialog(null,"Algum valor invalido");
         }
-        return null;
     }
 
     private void onCancel() {
@@ -72,22 +76,14 @@ public class Cadastro extends JDialog {
         dispose();
     }
 
-
-    public Cliente inicia() {
-        Cadastro dialog = new Cadastro();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
-        return onOK();
+    public IClienteDAO iniciaCadastro(){
+        pack();
+        setVisible(true);
+        return iClienteDAO;
     }
 
     public static void main(String[] args) {
-        Cadastro dialog = new Cadastro();
-        dialog.pack();
-        dialog.setVisible(true);
+        new Cadastro();
         System.exit(0);
     }
-
-
-
 }
